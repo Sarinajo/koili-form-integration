@@ -1,0 +1,404 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{# ✅ Improved success message #}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ message }}
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2>Agricultural Development Bank Ltd</h2>
+        <h3>Koili Integration Application Form</h3>
+    </div>
+    <button type="button" class="btn btn-secondary" onclick="printDiv('printable')">Print</button>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Printable Section -->
+    <div id="printable" class="border p-3 mb-3">
+        <div class="mb-2">
+            {{ form.merchant_name.label_tag }}<br>
+            {{ form.merchant_name }}
+            {% if form.merchant_name.errors %}
+                <div class="text-danger">
+                    {% for error in form.merchant_name.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.account_number.label_tag }}<br>
+            {{ form.account_number }}
+            {% if form.account_number.errors %}
+                <div class="text-danger">
+                    {% for error in form.account_number.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.mobile_number.label_tag }}<br>
+            {{ form.mobile_number }}
+            {% if form.mobile_number.errors %}
+                <div class="text-danger">
+                    {% for error in form.mobile_number.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.pan.label_tag }}<br>
+            {{ form.pan }}
+            {% if form.pan.errors %}
+                <div class="text-danger">
+                    {% for error in form.pan.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- QR Channel -->
+        <div class="mb-3">
+            <label class="form-label">{{ form.qr_channel.label }}:</label>
+            <div style="margin-left: 20px;">
+                {% for radio in form.qr_channel %}
+                    <div class="form-check">
+                        {{ radio.tag }}
+                        <label class="form-check-label">{{ radio.choice_label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if form.qr_channel.errors %}
+                <div class="text-danger">
+                    {% for error in form.qr_channel.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="form-check">
+            {{ form.agree_deposits }} {{ form.agree_deposits.label }}
+            {% if form.agree_deposits.errors %}
+                <div class="text-danger">
+                    {% for error in form.agree_deposits.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.agree_pay }} {{ form.agree_pay.label }}
+            {% if form.agree_pay.errors %}
+                <div class="text-danger">
+                    {% for error in form.agree_pay.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.declare }} {{ form.declare.label }}
+            {% if form.declare.errors %}
+                <div class="text-danger">
+                    {% for error in form.declare.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Date -->
+        <div class="mb-2">
+            {{ form.date.label_tag }}<br>
+            {{ form.date }}
+            {% if form.date.errors %}
+                <div class="text-danger">
+                    {% for error in form.date.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.name.label_tag }}<br>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">
+                    {% for error in form.name.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.signature.label_tag }}<br>
+            {{ form.signature }}
+            {% if form.signature.errors %}
+                <div class="text-danger">
+                    {% for error in form.signature.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Attachments Section -->
+    <div class="mb-3">
+        {{ attachments_form.attachments.label_tag }}<br>
+        {{ attachments_form.attachments }}
+        <div id="attachments_list" style="margin-top: 10px;"></div>
+        {% if attachments_form.attachments.errors %}
+            <div class="text-danger">
+                {% for error in attachments_form.attachments.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+   <div class="mb-3">
+    {{ form.branch.label_tag }}
+    {{ form.branch }}
+    {% if form.branch.errors %}
+        <div class="text-danger">
+            {% for error in form.branch.errors %}
+                {{ error }}<br>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+    <div class="mb-3">
+        {{ form.branch_staff_contact.label_tag }}<br>
+        {{ form.branch_staff_contact }}
+        {% if form.branch_staff_contact.errors %}
+            <div class="text-danger">
+                {% for error in form.branch_staff_contact.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+    {{ form.submitter_email.label_tag }}<br>
+    {{ form.submitter_email }}
+    {% if form.submitter_email.errors %}
+        <div class="text-danger">
+            {% for error in form.submitter_email.errors %}
+                {{ error }}<br>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include Select2 CSS -->
+<link rel="stylesheet" href="{% static 'core/css/select2.min.css' %}">
+
+<!-- Include Select2 JS -->
+<script src="{% static 'core/js/select2.min.js' %}"></script>
+
+<<script>
+document.addEventListener("DOMContentLoaded", function() {
+    $('.branch-select').select2({
+        placeholder: "Select or type branch", // placeholder works now
+        allowClear: true,
+        width: '100%',
+        tags: false  // make sure tagging is off
+    });
+});
+</script>
+
+
+
+
+
+<script>
+function printDiv(divId) {
+    const content = document.getElementById(divId).cloneNode(true);
+    const myWindow = window.open('', '', 'width=900,height=700');
+
+    myWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Form</title>
+            <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+            <link rel="stylesheet" href="{% static 'core/css/scripts.css' %}">
+            <link rel="stylesheet" href="{% static 'core/css/nepali.datepicker.v5.0.6.min.css' %}">
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                input, select, textarea { width: 100%; box-sizing: border-box; }
+                .form-check { margin-bottom: 0.5rem; }
+                .border { border: 1px solid #000 !important; padding: 15px; }
+            </style>
+        </head>
+        <body></body>
+        </html>
+    `);
+
+    myWindow.document.body.appendChild(content);
+    myWindow.document.close();
+    myWindow.focus();
+    myWindow.print();
+}
+</script>
+
+{# Your existing datepicker, attachments JS, etc. remain exactly as before #}
+
+
+<script>
+    // Nepali datepicker
+    const head = document.getElementsByTagName('head')[0];
+    const nepaliLink = document.createElement('link');
+    nepaliLink.rel = 'stylesheet';
+    nepaliLink.href = "{% static 'core/css/nepali.datepicker.v5.0.6.min.css' %}";
+    head.appendChild(nepaliLink);
+
+    const nepaliScript = document.createElement('script');
+    nepaliScript.src = "{% static 'core/js/nepali.datepicker.v5.0.6.min.js' %}";
+    nepaliScript.onload = function() {
+        const dateInput = document.getElementById("id_date");
+        if(dateInput){
+            dateInput.value = "";
+            dateInput.nepaliDatePicker({ ndpYear:true, ndpMonth:true, ndpYearCount:10 });
+        }
+    };
+    head.appendChild(nepaliScript);
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const attachmentsInput = document.getElementById("attachments_input");
+    if (!attachmentsInput) return;
+
+    attachmentsInput.addEventListener("change", function() {
+        const files = attachmentsInput.files;
+        const tooLarge = [];
+
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > 1 * 1024 * 1024) { // 1MB
+                tooLarge.push(files[i].name);
+            }
+        }
+
+        if (tooLarge.length > 0) {
+            alert("The following files exceed 1MB and will be removed:\n" + tooLarge.join("\n"));
+
+            // Remove files that are too large
+            const dt = new DataTransfer();
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size <= 1 * 1024 * 1024) {
+                    dt.items.add(files[i]);
+                }
+            }
+            attachmentsInput.files = dt.files;
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const attachmentsInput = document.getElementById("attachments_input");
+    const attachmentsList = document.getElementById("attachments_list");
+    const form = attachmentsInput.closest("form");
+
+    // Array to keep track of selected files
+    let filesArray = [];
+
+    // Helper to render file list
+    function renderFiles() {
+        attachmentsList.innerHTML = "";
+        filesArray.forEach((file, index) => {
+            const fileDiv = document.createElement("div");
+            fileDiv.style.marginBottom = "5px";
+            fileDiv.textContent = file.name + " (" + Math.round(file.size / 1024) + " KB)";
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "Remove";
+            removeBtn.style.marginLeft = "10px";
+            removeBtn.className = "btn btn-sm btn-danger";
+
+            removeBtn.addEventListener("click", () => {
+                filesArray.splice(index, 1);
+                updateInputFiles();
+                renderFiles();
+            });
+
+            fileDiv.appendChild(removeBtn);
+            attachmentsList.appendChild(fileDiv);
+        });
+    }
+
+    // Update the actual input.files
+    function updateInputFiles() {
+        const dataTransfer = new DataTransfer();
+        filesArray.forEach(file => dataTransfer.items.add(file));
+        attachmentsInput.files = dataTransfer.files;
+    }
+
+    // When user selects files
+    attachmentsInput.addEventListener("change", function() {
+        const newFiles = Array.from(attachmentsInput.files);
+        const tooLarge = [];
+
+        newFiles.forEach(file => {
+            if (file.size > 1 * 1024 * 1024) { // 1MB
+                tooLarge.push(file.name);
+            } else {
+                filesArray.push(file);
+            }
+        });
+
+        if (tooLarge.length > 0) {
+            alert("These files exceed 1MB and were not added:\n" + tooLarge.join("\n"));
+        }
+
+        updateInputFiles();
+        renderFiles();
+    });
+
+    // Optional: final check before submitting
+    form.addEventListener("submit", function(e) {
+        if (filesArray.some(file => file.size > 1 * 1024 * 1024)) {
+            e.preventDefault();
+            alert("Some files are too large (>1MB). Please remove them.");
+        }
+    });
+
+});
+</script>
+
+
+{% endblock %}

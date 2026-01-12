@@ -1,0 +1,48 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Forms {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/scripts.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="border-end bg-dark text-white" id="sidebar-wrapper">
+        <div class="sidebar-heading p-3 fw-bold">Form</div>
+        <div class="list-group list-group-flush">
+
+            <a href="{% url 'form' %}" class="list-group-item list-group-item-action bg-dark text-white">Submit Form</a>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div id="page-content-wrapper">
+        <nav class="navbar navbar-light bg-light border-bottom px-3">
+            <button class="btn btn-outline-primary" id="sidebarToggle">☰</button>
+        </nav>
+        <div class="container-fluid p-4">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="{% static 'core/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'core/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'core/js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'core/js/scripts.js' %}"></script>
+
+<script>
+document.getElementById("sidebarToggle").addEventListener("click", function(){
+    document.getElementById("wrapper").classList.toggle("toggled");
+});
+</script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
