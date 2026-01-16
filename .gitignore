@@ -1,0 +1,33 @@
+# Python compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Django database
+*.sqlite3
+
+# Environment files (passwords, API keys)
+.env
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Django media/uploads (optional: only ignore if you don't want them on GitHub)
+uploads/
+media/
+
+# IDE / editor files
+.vscode/
+.idea/
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Django static files (optional)
+staticfiles/
