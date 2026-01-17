@@ -18,6 +18,7 @@ class FormForms(forms.ModelForm):
         widget=forms.RadioSelect(attrs={'class':'form-check-input'}),
         required=True
     )
+    signature = forms.CharField(required=False)
 
     agree_deposits = forms.BooleanField(
         required=True,
@@ -49,20 +50,20 @@ class FormForms(forms.ModelForm):
     class Meta:
         model = Forms
         fields = [
-            'merchant_name','account_number','mobile_number','pan','qr_channel',
-            'agree_deposits','agree_pay','declare','date','name','signature',
-            'branch','branch_staff_contact','submitter_email'
+            'merchant_name', 'account_number', 'mobile_number', 'pan', 'qr_channel',
+            'agree_deposits', 'agree_pay', 'declare', 'date', 'name', 'signature',
+            'branch', 'branch_staff_contact', 'submitter_email'
         ]
         widgets = {
-            'merchant_name': forms.TextInput(attrs={'class':'form-control'}),
-            'account_number': forms.TextInput(attrs={'class':'form-control'}),
-            'mobile_number': forms.TextInput(attrs={'class':'form-control'}),
-            'pan': forms.TextInput(attrs={'class':'form-control'}),
-            'date': forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
-            'name': forms.TextInput(attrs={'class':'form-control'}),
-            'signature': forms.TextInput(attrs={'class':'form-control'}),
-            'branch_staff_contact': forms.TextInput(attrs={'class':'form-control'}),
-            'submitter_email': forms.EmailInput(attrs={'class':'form-control'}),
+            'merchant_name': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'account_number': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'mobile_number': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'pan': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'date': forms.TextInput(attrs={'class': 'form-control print-input', 'autocomplete': 'off'}),
+            'name': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'signature': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'branch_staff_contact': forms.TextInput(attrs={'class': 'form-control print-input'}),
+            'submitter_email': forms.EmailInput(attrs={'class': 'form-control print-input'}),
         }
 
 
@@ -81,4 +82,6 @@ class FormAttachmentsForm(forms.Form):
         required=False,
         label="Attachments (max 1MB each)"
     )
+
+
 

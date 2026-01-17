@@ -1,13 +1,13 @@
 {% extends 'core/layout/base.html' %}
-{% load static %}
+{% block title %}Admin Forms{% endblock %}
 
 {% block content %}
-<h2>Forms for {{ request.user.adminprofile.branch.name }}</h2>
+<h2>Forms for {{ request.user.adminprofile.qr_channel }}</h2>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Merchant Name</th>
+            <th>Merchant</th>
             <th>Account Number</th>
             <th>Status</th>
             <th>Submitted At</th>
@@ -19,16 +19,28 @@
         <tr>
             <td>{{ form.merchant_name }}</td>
             <td>{{ form.account_number }}</td>
-            <td>{{ form.status }}</td>
-            <td>{{ form.submitted_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                <form method="post" action="{% url 'update_form_status' form.id %}">
+                    {% csrf_token %}
+                    <select name="status" class="form-select form-select-sm"
+                        {% if form.status == 'approved' or form.status == 'rejected' %}disabled{% endif %}>
+                        <option value="pending" {% if form.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="approved" {% if form.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="rejected" {% if form.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-success mt-1"
+                        {% if form.status == 'approved' or form.status == 'rejected' %}disabled{% endif %}>
+                        Update
+                    </button>
+                </form>
+            </td>
+            <td>{{ form.submitted_at }}</td>
             <td>
                 <a href="{% url 'view_form' form.id %}" class="btn btn-sm btn-primary">View</a>
             </td>
         </tr>
         {% empty %}
-        <tr>
-            <td colspan="5">No forms submitted for this branch.</td>
-        </tr>
+        <tr><td colspan="5" class="text-center">No forms available</td></tr>
         {% endfor %}
     </tbody>
 </table>

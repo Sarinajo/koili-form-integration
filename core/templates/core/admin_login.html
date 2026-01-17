@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
-</head>
-<body>
-<div class="container mt-5">
-    <h2>Admin Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label>Username:</label>
-            <input type="text" name="username" class="form-control" required>
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card p-4 shadow-sm">
+            <h3 class="card-title text-center mb-3">Admin Login</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            {% if form.errors %}
+                <div class="alert alert-danger mt-2">
+                    Invalid username or password.
+                </div>
+            {% endif %}
         </div>
-        <div class="mb-3">
-            <label>Password:</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-        {% if form.errors %}
-            <div class="mt-2 text-danger">
-                Invalid username or password
-            </div>
-        {% endif %}
-    </form>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}

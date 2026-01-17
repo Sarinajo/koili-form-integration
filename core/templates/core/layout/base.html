@@ -14,8 +14,19 @@
     <div class="border-end bg-dark text-white" id="sidebar-wrapper">
         <div class="sidebar-heading p-3 fw-bold">Form</div>
         <div class="list-group list-group-flush">
-
             <a href="{% url 'form' %}" class="list-group-item list-group-item-action bg-dark text-white">Submit Form</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'admin_forms' %}" class="list-group-item list-group-item-action bg-dark text-white">Pending Forms</a>
+                <a href="{% url 'processed_forms' %}" class="list-group-item list-group-item-action bg-dark text-white">Processed Forms</a>
+
+                <form method="post" action="{% url 'admin_logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="list-group-item list-group-item-action bg-dark text-white" style="width:100%; text-align:left; border:none; background:none; padding:0.75rem 1rem;">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'admin_login' %}" class="list-group-item list-group-item-action bg-dark text-white">Admin Login</a>
+            {% endif %}
         </div>
     </div>
 
@@ -43,6 +54,6 @@ document.getElementById("sidebarToggle").addEventListener("click", function(){
 </script>
 
 {% block extra_js %}{% endblock %}
-
 </body>
+
 </html>

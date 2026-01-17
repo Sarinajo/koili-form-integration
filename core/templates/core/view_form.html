@@ -1,0 +1,45 @@
+{% extends 'core/layout/base.html' %}
+{% block title %}View Form{% endblock %}
+
+{% block content %}
+<h2>Form Details</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Merchant Name</th>
+        <td>{{ form.merchant_name }}</td>
+    </tr>
+    <tr>
+        <th>Account Number</th>
+        <td>{{ form.account_number }}</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>{{ form.status }}</td>
+    </tr>
+    <tr>
+        <th>QR Channel</th>
+        <td>{{ form.qr_channel }}</td>
+    </tr>
+    <tr>
+        <th>Branch</th>
+        <td>{{ form.branch }}</td>
+    </tr>
+    <tr>
+        <th>Submitted At</th>
+        <td>{{ form.submitted_at }}</td>
+    </tr>
+    <tr>
+    <th>Attachments</th>
+    <td>
+        {% for attachment in attachments %}
+            <a href="{{ attachment.file.url }}" target="_blank">{{ attachment.file.name|slice:"8:" }}</a><br>
+        {% empty %}
+            No attachments
+        {% endfor %}
+    </td>
+</tr>
+
+</table>
+
+{% endblock %}

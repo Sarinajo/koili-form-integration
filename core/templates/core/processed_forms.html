@@ -1,0 +1,33 @@
+{% extends 'core/layout/base.html' %}
+{% block title %}Processed Forms{% endblock %}
+
+{% block content %}
+<h2>Processed Forms for {{ request.user.adminprofile.qr_channel }}</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Merchant</th>
+            <th>Account Number</th>
+            <th>Status</th>
+            <th>Submitted At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in forms %}
+        <tr>
+            <td>{{ form.merchant_name }}</td>
+            <td>{{ form.account_number }}</td>
+            <td>{{ form.status }}</td>
+            <td>{{ form.submitted_at }}</td>
+            <td>
+                <a href="{% url 'view_form' form.id %}" class="btn btn-sm btn-primary">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center">No processed forms</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

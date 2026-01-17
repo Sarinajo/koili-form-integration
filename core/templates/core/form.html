@@ -3,7 +3,6 @@
 
 {% block content %}
 
-{# ✅ Improved success message #}
 {% if messages %}
   {% for message in messages %}
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -30,6 +29,7 @@
 
     <!-- Printable Section -->
     <div id="printable" class="border p-3 mb-3">
+
         <div class="mb-2">
             {{ form.merchant_name.label_tag }}<br>
             {{ form.merchant_name }}
@@ -130,7 +130,6 @@
             {% endif %}
         </div>
 
-        <!-- Date -->
         <div class="mb-2">
             {{ form.date.label_tag }}<br>
             {{ form.date }}
@@ -155,17 +154,14 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
-            {{ form.signature.label_tag }}<br>
-            {{ form.signature }}
-            {% if form.signature.errors %}
-                <div class="text-danger">
-                    {% for error in form.signature.errors %}
-                        {{ error }}<br>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {# ❌ Signature input removed #}
+
+        <!-- ✅ Print-only signature line -->
+        <div class="mt-4 print-signature">
+            <strong>Signature:</strong>
+            <div class="signature-line"></div>
         </div>
+
     </div>
 
     <!-- Attachments Section -->
@@ -182,17 +178,18 @@
         {% endif %}
     </div>
 
-   <div class="mb-3">
-    {{ form.branch.label_tag }}
-    {{ form.branch }}
-    {% if form.branch.errors %}
-        <div class="text-danger">
-            {% for error in form.branch.errors %}
-                {{ error }}<br>
-            {% endfor %}
-        </div>
-    {% endif %}
-</div>
+    <!-- Branch -->
+    <div class="mb-3">
+        {{ form.branch.label_tag }}
+        {{ form.branch }}
+        {% if form.branch.errors %}
+            <div class="text-danger">
+                {% for error in form.branch.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 
     <div class="mb-3">
         {{ form.branch_staff_contact.label_tag }}<br>
@@ -207,16 +204,16 @@
     </div>
 
     <div class="mb-3">
-    {{ form.submitter_email.label_tag }}<br>
-    {{ form.submitter_email }}
-    {% if form.submitter_email.errors %}
-        <div class="text-danger">
-            {% for error in form.submitter_email.errors %}
-                {{ error }}<br>
-            {% endfor %}
-        </div>
-    {% endif %}
-</div>
+        {{ form.submitter_email.label_tag }}<br>
+        {{ form.submitter_email }}
+        {% if form.submitter_email.errors %}
+            <div class="text-danger">
+                {% for error in form.submitter_email.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -224,26 +221,38 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Include Select2 CSS -->
-<link rel="stylesheet" href="{% static 'core/css/select2.min.css' %}">
 
-<!-- Include Select2 JS -->
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'core/css/select2.min.css' %}">
 <script src="{% static 'core/js/select2.min.js' %}"></script>
 
-<<script>
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     $('.branch-select').select2({
-        placeholder: "Select or type branch", // placeholder works now
+        placeholder: "Select or type branch",
         allowClear: true,
         width: '100%',
-        tags: false  // make sure tagging is off
+        tags: false
     });
 });
 </script>
 
+<!-- Print signature CSS -->
+<style>
+@media print {
+    .signature-line {
+        margin-top: 40px;
+        width: 250px;
+        border-bottom: 1px solid #000;
+    }
+}
 
-
-
+@media screen {
+    .print-signature {
+        display: none;
+    }
+}
+</style>
 
 <script>
 function printDiv(divId) {
@@ -256,11 +265,9 @@ function printDiv(divId) {
             <title>Print Form</title>
             <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
             <link rel="stylesheet" href="{% static 'core/css/scripts.css' %}">
-            <link rel="stylesheet" href="{% static 'core/css/nepali.datepicker.v5.0.6.min.css' %}">
             <style>
                 body { font-family: Arial, sans-serif; padding: 20px; }
-                input, select, textarea { width: 100%; box-sizing: border-box; }
-                .form-check { margin-bottom: 0.5rem; }
+                input, select { width: 100%; }
                 .border { border: 1px solid #000 !important; padding: 15px; }
             </style>
         </head>
@@ -275,27 +282,24 @@ function printDiv(divId) {
 }
 </script>
 
-{# Your existing datepicker, attachments JS, etc. remain exactly as before #}
-
-
+<!-- Nepali datepicker (unchanged) -->
 <script>
-    // Nepali datepicker
-    const head = document.getElementsByTagName('head')[0];
-    const nepaliLink = document.createElement('link');
-    nepaliLink.rel = 'stylesheet';
-    nepaliLink.href = "{% static 'core/css/nepali.datepicker.v5.0.6.min.css' %}";
-    head.appendChild(nepaliLink);
+const head = document.getElementsByTagName('head')[0];
+const nepaliLink = document.createElement('link');
+nepaliLink.rel = 'stylesheet';
+nepaliLink.href = "{% static 'core/css/nepali.datepicker.v5.0.6.min.css' %}";
+head.appendChild(nepaliLink);
 
-    const nepaliScript = document.createElement('script');
-    nepaliScript.src = "{% static 'core/js/nepali.datepicker.v5.0.6.min.js' %}";
-    nepaliScript.onload = function() {
-        const dateInput = document.getElementById("id_date");
-        if(dateInput){
-            dateInput.value = "";
-            dateInput.nepaliDatePicker({ ndpYear:true, ndpMonth:true, ndpYearCount:10 });
-        }
-    };
-    head.appendChild(nepaliScript);
+const nepaliScript = document.createElement('script');
+nepaliScript.src = "{% static 'core/js/nepali.datepicker.v5.0.6.min.js' %}";
+nepaliScript.onload = function() {
+    const dateInput = document.getElementById("id_date");
+    if(dateInput){
+        dateInput.value = "";
+        dateInput.nepaliDatePicker({ ndpYear:true, ndpMonth:true, ndpYearCount:10 });
+    }
+};
+head.appendChild(nepaliScript);
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
