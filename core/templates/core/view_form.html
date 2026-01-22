@@ -3,6 +3,12 @@
 
 {% block content %}
 <h2>Form Details</h2>
+<div class="mb-3">
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
+       class="btn btn-secondary">
+        ← Back
+    </a>
+</div>
 
 <table class="table table-bordered">
     <tr>
@@ -27,7 +33,8 @@
     </tr>
     <tr>
         <th>Submitted At</th>
-        <td>{{ form.submitted_at }}</td>
+        <td>{{ form.submitted_at|date:"Y-m-d h:i A" }}
+</td>
     </tr>
     <tr>
     <th>Attachments</th>

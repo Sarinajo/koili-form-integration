@@ -6,26 +6,70 @@
     <link rel="stylesheet" href="{% static 'core/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/scripts.css' %}">
 
+    <style>
+        /* Sidebar Gradient */
+        #sidebar-wrapper {
+            background: linear-gradient(90deg, #064e3b, #10b981); /* dark green → light green */
+            color: #f0fdf4;
+        }
+
+        #sidebar-wrapper .list-group-item {
+            background: transparent;
+            color: #f0fdf4;
+            border: none;
+        }
+
+        #sidebar-wrapper .list-group-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        /* Buttons Gradient */
+        .btn-primary {
+            background: linear-gradient(90deg, #064e3b, #10b981);
+            border: none;
+            color: #f0fdf4;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #10b981, #064e3b);
+            color: #ffffff;
+        }
+
+        /* Optional: small tweak to logout button inside sidebar */
+        #sidebar-wrapper form button {
+            background: transparent;
+            color: #f0fdf4;
+            border: none;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        #sidebar-wrapper form button:hover {
+            background: rgba(255,255,255,0.15);
+            color: #ffffff;
+        }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 <div class="d-flex" id="wrapper">
     <!-- Sidebar -->
-    <div class="border-end bg-dark text-white" id="sidebar-wrapper">
+    <div class="border-end" id="sidebar-wrapper">
         <div class="sidebar-heading p-3 fw-bold">Form</div>
         <div class="list-group list-group-flush">
-            <a href="{% url 'form' %}" class="list-group-item list-group-item-action bg-dark text-white">Submit Form</a>
+            <a href="{% url 'form' %}" class="list-group-item list-group-item-action">Submit Form</a>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'admin_forms' %}" class="list-group-item list-group-item-action bg-dark text-white">Pending Forms</a>
-                <a href="{% url 'processed_forms' %}" class="list-group-item list-group-item-action bg-dark text-white">Processed Forms</a>
+                <a href="{% url 'admin_forms' %}" class="list-group-item list-group-item-action">Pending Forms</a>
+                <a href="{% url 'processed_forms' %}" class="list-group-item list-group-item-action">Processed Forms</a>
 
                 <form method="post" action="{% url 'admin_logout' %}" style="margin:0;">
                     {% csrf_token %}
-                    <button type="submit" class="list-group-item list-group-item-action bg-dark text-white" style="width:100%; text-align:left; border:none; background:none; padding:0.75rem 1rem;">Logout</button>
+                    <button type="submit" class="list-group-item list-group-item-action">Logout</button>
                 </form>
             {% else %}
-                <a href="{% url 'admin_login' %}" class="list-group-item list-group-item-action bg-dark text-white">Admin Login</a>
+                <a href="{% url 'admin_login' %}" class="list-group-item list-group-item-action">Admin Login</a>
             {% endif %}
         </div>
     </div>
@@ -55,5 +99,4 @@ document.getElementById("sidebarToggle").addEventListener("click", function(){
 
 {% block extra_js %}{% endblock %}
 </body>
-
 </html>

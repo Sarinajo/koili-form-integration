@@ -11,6 +11,7 @@ QR_CHOICES = [
 class FormForms(forms.ModelForm):
     submitter_email = forms.EmailField(
         required=True,
+        label = "Submitter Email",
         widget=forms.EmailInput(attrs={'class': 'form-control'})
     )
     qr_channel = forms.ChoiceField(
@@ -54,6 +55,15 @@ class FormForms(forms.ModelForm):
             'agree_deposits', 'agree_pay', 'declare', 'date', 'name', 'signature',
             'branch', 'branch_staff_contact', 'submitter_email'
         ]
+        labels = {
+            'pan': 'PAN',
+            'name': 'Staff Name',
+            'merchant_name': 'Merchant Name',
+            'account_number': 'Account Number',
+            'mobile_number': 'Mobile Number',
+            'branch_staff_contact': 'Branch Staff Contact',
+            'submitter_email': 'Submitter Email',
+        }
         widgets = {
             'merchant_name': forms.TextInput(attrs={'class': 'form-control print-input'}),
             'account_number': forms.TextInput(attrs={'class': 'form-control print-input'}),

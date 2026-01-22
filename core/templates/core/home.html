@@ -1,0 +1,75 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Koili Portal</title>
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #e3f6e5; /* light green background */
+            font-family: 'Helvetica', 'Arial', sans-serif;
+        }
+
+        .portal-card {
+            width: 260px;
+            height: 360px;
+            cursor: pointer;
+            border-radius: 20px;
+            background-color: #ffffff; /* white card */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+
+        .portal-card img {
+    width: 90%;
+    height: auto;
+    margin-bottom: 60px; /* increased spacing between image and button */
+}
+
+.portal-button {
+    background-color: #2f6f4e; /* dark green button */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+        .portal-button:hover {
+            background-color: #1e4b34; /* slightly darker green */
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-card">
+    <img src="{% static 'core/assets/logo.png' %}" alt="Soundbox Logo">
+    <button class="portal-button" onclick="window.location.href='{% url 'form' %}'">
+         Koili Integration Form
+    </button>
+</div>
+
+</body>
+</html>

@@ -174,3 +174,5 @@ def update_form_status(request, form_id):
 
     messages.success(request, f"Form {new_status}.")
     return redirect('admin_forms')
+def home(request):
+    return render(request, 'core/home.html')

@@ -20,7 +20,8 @@
             <td>{{ form.merchant_name }}</td>
             <td>{{ form.account_number }}</td>
             <td>{{ form.status }}</td>
-            <td>{{ form.submitted_at }}</td>
+            <td>{{ form.submitted_at|date:"Y-m-d h:i A" }}
+</td>
             <td>
                 <a href="{% url 'view_form' form.id %}" class="btn btn-sm btn-primary">View</a>
             </td>

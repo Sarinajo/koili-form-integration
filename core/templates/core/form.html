@@ -24,13 +24,16 @@
     <button type="button" class="btn btn-secondary" onclick="printDiv('printable')">Print</button>
 </div>
 
+<!-- Form Wrapper -->
+<div id="form-wrapper">
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <!-- Printable Section -->
-    <div id="printable" class="border p-3 mb-3">
+    <div id="printable">
 
-        <div class="mb-2">
+        <!-- Merchant Name -->
+        <div class="mb-3">
             {{ form.merchant_name.label_tag }}<br>
             {{ form.merchant_name }}
             {% if form.merchant_name.errors %}
@@ -42,7 +45,8 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
+        <!-- Account Number -->
+        <div class="mb-3">
             {{ form.account_number.label_tag }}<br>
             {{ form.account_number }}
             {% if form.account_number.errors %}
@@ -54,7 +58,8 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
+        <!-- Mobile Number -->
+        <div class="mb-3">
             {{ form.mobile_number.label_tag }}<br>
             {{ form.mobile_number }}
             {% if form.mobile_number.errors %}
@@ -66,7 +71,8 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
+        <!-- PAN -->
+        <div class="mb-3">
             {{ form.pan.label_tag }}<br>
             {{ form.pan }}
             {% if form.pan.errors %}
@@ -130,7 +136,8 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
+        <!-- Date -->
+        <div class="mb-3">
             {{ form.date.label_tag }}<br>
             {{ form.date }}
             {% if form.date.errors %}
@@ -142,7 +149,8 @@
             {% endif %}
         </div>
 
-        <div class="mb-2">
+        <!-- Name -->
+        <div class="mb-3">
             {{ form.name.label_tag }}<br>
             {{ form.name }}
             {% if form.name.errors %}
@@ -153,8 +161,6 @@
                 </div>
             {% endif %}
         </div>
-
-        {# ❌ Signature input removed #}
 
         <!-- ✅ Print-only signature line -->
         <div class="mt-4 print-signature">
@@ -217,11 +223,80 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+</div>
 
 {% endblock %}
 
-{% block extra_js %}
+{% block extra_css %}
+<style>
+/* Form Wrapper */
+#form-wrapper {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: auto;
+}
 
+/* Headings */
+h2, h3 {
+    color: #145214; /* dark green */
+}
+
+/* Inputs & selects */
+input.form-control, select.form-control, textarea.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+    border-color: #145214;
+    box-shadow: 0 0 5px rgba(20,82,20,0.3);
+    outline: none;
+}
+
+/* Submit Button */
+.btn-primary, .btn {
+    background: linear-gradient(to right, #145214, #66bb6a);
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #66bb6a, #145214);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(20,82,20,0.3);
+}
+
+/* Error Messages */
+.text-danger {
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Print Signature Line */
+.print-signature .signature-line {
+    margin-top: 40px;
+    width: 250px;
+    border-bottom: 1px dotted #000;
+    display: inline-block;
+}
+
+/* Margin between input fields */
+.mb-2, .mb-3 {
+    margin-bottom: 15px !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
 <!-- Select2 -->
 <link rel="stylesheet" href="{% static 'core/css/select2.min.css' %}">
 <script src="{% static 'core/js/select2.min.js' %}"></script>
@@ -237,20 +312,27 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-<!-- Print signature CSS -->
+<!-- Print signature and narrower inputs -->
 <style>
 @media print {
     .signature-line {
         margin-top: 40px;
         width: 250px;
-        border-bottom: 1px solid #000;
+        border-bottom: 1px dotted #000;
+        display: inline-block;
     }
+    .print-signature { display: block; }
+
+    input.form-control, select.form-control, textarea.form-control {
+        width: 60% !important;
+        box-sizing: border-box;
+    }
+
+    .form-check { display: flex; align-items: center; }
 }
 
 @media screen {
-    .print-signature {
-        display: none;
-    }
+    .print-signature { display: none; }
 }
 </style>
 
@@ -265,11 +347,6 @@ function printDiv(divId) {
             <title>Print Form</title>
             <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
             <link rel="stylesheet" href="{% static 'core/css/scripts.css' %}">
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; }
-                input, select { width: 100%; }
-                .border { border: 1px solid #000 !important; padding: 15px; }
-            </style>
         </head>
         <body></body>
         </html>
@@ -282,7 +359,7 @@ function printDiv(divId) {
 }
 </script>
 
-<!-- Nepali datepicker (unchanged) -->
+<!-- Nepali datepicker -->
 <script>
 const head = document.getElementsByTagName('head')[0];
 const nepaliLink = document.createElement('link');
@@ -301,46 +378,15 @@ nepaliScript.onload = function() {
 };
 head.appendChild(nepaliScript);
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const attachmentsInput = document.getElementById("attachments_input");
-    if (!attachmentsInput) return;
 
-    attachmentsInput.addEventListener("change", function() {
-        const files = attachmentsInput.files;
-        const tooLarge = [];
-
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].size > 1 * 1024 * 1024) { // 1MB
-                tooLarge.push(files[i].name);
-            }
-        }
-
-        if (tooLarge.length > 0) {
-            alert("The following files exceed 1MB and will be removed:\n" + tooLarge.join("\n"));
-
-            // Remove files that are too large
-            const dt = new DataTransfer();
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].size <= 1 * 1024 * 1024) {
-                    dt.items.add(files[i]);
-                }
-            }
-            attachmentsInput.files = dt.files;
-        }
-    });
-});
-</script>
+<!-- Attachments JS -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const attachmentsInput = document.getElementById("attachments_input");
     const attachmentsList = document.getElementById("attachments_list");
     const form = attachmentsInput.closest("form");
-
-    // Array to keep track of selected files
     let filesArray = [];
 
-    // Helper to render file list
     function renderFiles() {
         attachmentsList.innerHTML = "";
         filesArray.forEach((file, index) => {
@@ -365,44 +411,34 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Update the actual input.files
     function updateInputFiles() {
         const dataTransfer = new DataTransfer();
         filesArray.forEach(file => dataTransfer.items.add(file));
         attachmentsInput.files = dataTransfer.files;
     }
 
-    // When user selects files
     attachmentsInput.addEventListener("change", function() {
         const newFiles = Array.from(attachmentsInput.files);
         const tooLarge = [];
 
         newFiles.forEach(file => {
-            if (file.size > 1 * 1024 * 1024) { // 1MB
-                tooLarge.push(file.name);
-            } else {
-                filesArray.push(file);
-            }
+            if (file.size > 1 * 1024 * 1024) tooLarge.push(file.name);
+            else filesArray.push(file);
         });
 
-        if (tooLarge.length > 0) {
-            alert("These files exceed 1MB and were not added:\n" + tooLarge.join("\n"));
-        }
+        if (tooLarge.length > 0) alert("These files exceed 1MB and were not added:\n" + tooLarge.join("\n"));
 
         updateInputFiles();
         renderFiles();
     });
 
-    // Optional: final check before submitting
     form.addEventListener("submit", function(e) {
         if (filesArray.some(file => file.size > 1 * 1024 * 1024)) {
             e.preventDefault();
             alert("Some files are too large (>1MB). Please remove them.");
         }
     });
-
 });
 </script>
-
 
 {% endblock %}

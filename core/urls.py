@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     # Public form
-    path('', views.open_form, name='form'),
+    path('',views.home, name='home'),
+    path('form/', views.open_form, name='form'),
 
     # Admin authentication
     path('adminpanel/login/', views.admin_login, name='admin_login'),
